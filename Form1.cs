@@ -42,6 +42,8 @@ namespace Project1
         //Iterations set to 100 by default
         int iterations = 100;
 
+        aRNG rng = aRNG.Instance(0);
+
         //Initializes a single die with a seed of 0
         aDie d = aDie.Instance(0);
 
@@ -191,8 +193,8 @@ namespace Project1
                 Roll_Button.Enabled = true;
             }
             
-            //Get a die with a new seed value
-            d = aDie.Instance(seedValue);
+            //Get an RNG with a new seed value
+            rng = aRNG.Instance(seedValue);
         }
 
         /*-------------------------------------------------------------

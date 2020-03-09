@@ -17,41 +17,14 @@ namespace Project1
         static aDie instance = null;
 
         //RNG
-        Random rand;
+        aRNG rng;
 
         //Seed value
-        int SEED;
 
         //Singleton works because of private constructor
-        private aDie(int seedValue)
+        public aDie()
         {
-            //Sets the seed for the RNG
-            SEED = seedValue;
-            //Creates the RNG
-            rand = new Random(SEED);
-        }
-
-        /*Public static getter for the instantiation of the singleton
-         *  +Checks to see if there is an instance already: if not,
-         *   one is created
-         */
-        public static aDie Instance(int seedValue)
-        {
-            //If there is no instance, create a new instance with the seed value 
-            if (instance == null)
-            {
-                instance = new aDie(seedValue);
-            }
-
-            //If there us an instance, but a new seed is needed
-            else if (seedValue != instance.SEED)
-            {
-                //Creates a new die with the new seed value
-                instance = new aDie(seedValue);
-            }
-
-            //Returns the instance
-            return instance;
+            rng = aRNG.Instance();
         }
 
         /*-------------------------------------------------------------
@@ -60,7 +33,7 @@ namespace Project1
         ------------------------------------------------------------*/
         public int Roll()
         {
-            return rand.Next(1, 7);
+            return rng.Random(1, 6);
         }
 
         //Conversion operator to convert aDie into an int
