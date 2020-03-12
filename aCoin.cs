@@ -11,49 +11,19 @@ namespace Project1
     internal class aCoin
     {
         //RNG that will return a 0 or a 1
-        Random random;
-
-        //Seed for the RNG
-        int SEED;
-
-        //Static instance for a singleton
-        private static aCoin instance = null;
+        aRNG rng;
 
         //Private constructor that accepts a seed
-        private aCoin(int seed)
-        {
-            //Stores the seed value
-            SEED = seed;
-            //Generates a new Random object with the new seed
-            random = new Random(SEED);
-        }
-
-        //Public accessor for the instance, ensures a single instance
-        public static aCoin Instance(int seed)
-        {
-            if (instance != null)
-            {
-                //Create a new coin if the seed is different
-                if (seed != instance.SEED)
-                    return new aCoin(seed);
-
-                //Return the instance if it's not null
-                return instance;
-            }
-            else
-            {
-                //Returns a new instance if "instance" is null
-                return new aCoin(seed);
-            }
+        public aCoin(){
+            rng = aRNG.Instance();    
         }
 
         /*-------------------------------------------------------------
             int Flip():
                 Returns a random number between 0 and 1
         ------------------------------------------------------------*/
-        public int Flip()
-        {
-            return random.Next(0, 2);
+        public int Flip(){
+            return rng.Random(0,1);
         }
 
         //Conversion operator that converts a coin to an int

@@ -6,8 +6,13 @@ namespace Project1
     {
         Random rand = new Random();
         List<aCard> deck;
+
+        aRNG rng;
         
-        public aDeckOfCards(){
+        public aDeckOfCards(bool empty){
+            rng = aRNG.Instance();
+            deck = new List<aCard>();
+
             List<char> faces = {
                 '1',
                 '2',
@@ -28,7 +33,6 @@ namespace Project1
                 for(int  i = 0; i < 4; ++i){
                     foreach(char face in faces){
                         deck.Add(new aCard(face, i));
-                        present.Add(true);
                     }
                 }
             }
@@ -39,10 +43,29 @@ namespace Project1
             Console.WriteLine("Deck completed and created");
         }
 
-        public aCard draw()
-        {
-            aCard card = deck[rand.Next(0, deck.Count + 1)];
-            deck.Remove(card);
+        void Shuffle(){
+            List<aCard> NewDeck = new List<aCard>();
+
+            while(deck.Count > 0){
+                int index = rng.Random(0, Count);
+                NewDeck.Add(deck[index]);
+                deck.RemoveAt(index);
+            }
+
+            deck = NewDeck;
+        }
+
+        public aCard Remove(){
+            if(deck.Count > 0){
+                aCard card = deck[0];
+                deck.RemoveAt(0);
+                return card;
+            }
+            else
+                throw aCard.CardException("No cards in the deck");
+        }
+
+        public void Replace(aCard card){
 
         }
     }
