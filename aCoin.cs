@@ -1,4 +1,4 @@
-/*=====================================================================
+﻿/*=====================================================================
    class aCoin   Author: Eduardo Nodarse
    -------------------------------------------------------------------
        -This class creates an RNG that will simulate a coin flip and
@@ -8,11 +8,11 @@ using System;
 
 namespace Project1
 {
-	internal class aCoin
+    internal class aCoin
     {
         //RNG that will return a 0 or a 1
         Random random;
-        
+
         //Seed for the RNG
         int SEED;
 
@@ -20,24 +20,28 @@ namespace Project1
         private static aCoin instance = null;
 
         //Private constructor that accepts a seed
-        private aCoin(int seed){
+        private aCoin(int seed)
+        {
             //Stores the seed value
             SEED = seed;
             //Generates a new Random object with the new seed
-            random = new Random(SEED);    
+            random = new Random(SEED);
         }
 
         //Public accessor for the instance, ensures a single instance
-        public aCoin Instance(int seed){
-            if(instance != null){
+        public static aCoin Instance(int seed)
+        {
+            if (instance != null)
+            {
+                //Create a new coin if the seed is different
+                if (seed != instance.SEED)
+                    return new aCoin(seed);
+
                 //Return the instance if it's not null
                 return instance;
             }
-            else if (seed != instance.SEED){
-                //Returns a new instance if the seed is updated
-                return new aCoin(seed);
-            }
-            else{
+            else
+            {
                 //Returns a new instance if "instance" is null
                 return new aCoin(seed);
             }
@@ -47,14 +51,15 @@ namespace Project1
             int Flip():
                 Returns a random number between 0 and 1
         ------------------------------------------------------------*/
-        public int Flip(){
-            return random.Next(0,2);
+        public int Flip()
+        {
+            return random.Next(0, 2);
         }
 
         //Conversion operator that converts a coin to an int
         public static implicit operator int(aCoin c) => c.Flip();
 
         //Conversion operator that converts a coin to a string
-        public static implicit operator string(aCoin c)=> (int)c == 1 ? "H" : "T";
+        public static implicit operator string(aCoin c) => (int)c == 1 ? "H" : "T";
     }
 }

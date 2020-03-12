@@ -22,6 +22,7 @@ namespace Project1
 {
     public partial class Form1 : Form
     {
+        #region Dice Data Initilizations
         /*
           Instantiates a 2D array that stores the frequencies of each
           rolled number for each die
@@ -44,6 +45,13 @@ namespace Project1
 
         //Initializes a single die with a seed of 0
         aDie d = aDie.Instance(0);
+        #endregion
+
+        #region Coin Data Initializations
+        int[] coinTossFrequency = new int[2];
+
+        aCoin c = aCoin.Instance(0);
+        #endregion
 
         //Constructor, came with the project
         public Form1()
@@ -90,6 +98,15 @@ namespace Project1
                 sumFrequency[i] = 0;
             }
 
+            //For loop that writes 0 to each cell in the product Frequency array
+            for (int i = 0; i < productFrequency.Length; ++i)
+            {
+                productFrequency[i] = 0;
+            }
+
+            coinTossFrequency[0] = 0;
+            coinTossFrequency[1] = 0;
+
             /*Clears out the data in all three graphs
              *  +Series is the data
              *      +"Number Rolled" is the data for Die displays 1
@@ -99,6 +116,10 @@ namespace Project1
             Die_1_Display.Series["Number Rolled"].Points.Clear();
             Die_2_Display.Series["Number Rolled"].Points.Clear();
             Die_Sum_Display.Series["Total Rolled"].Points.Clear();
+            Die_Product_Display.Series["Product Rolled"].Points.Clear();
+
+            Coin_Toss_Display.Series["Toss Frequency"].Points.Clear();
+
 
             ///*Debug*/Console.WriteLine("Arrays have been cleared");
         }
@@ -128,12 +149,15 @@ namespace Project1
             //For each iteration, generate a random number and sum them
             for(int i =  0; i < iterations; ++i)
             {
+                #region Dice Data Collection and Display
                 //roll_1 holds the value of the first number rolled
                 int roll_1 = d;
                 //roll_2 holds the value of the second number rolled
                 int roll_2 = d;
                 //Sum holds the total of roll_1 and roll_2
                 int sum = roll_1 + roll_2;
+                //Product holds the product of roll_1 and roll_2
+                int product = roll_1 * roll_2;
 
                 //Visually keeps track of the rolls
                 Roll_Counter_Label.Text = "Rolls:  "+ i + "/" + iterations;
@@ -144,16 +168,27 @@ namespace Project1
                 diceFrequency[roll_1 - 1, 0] += 1;
                 diceFrequency[roll_2 - 1, 1] += 1;
                 sumFrequency[sum-2] += 1;
+                productFrequency[product] += 1;
 
                 //Updates the values in the graphs
                 Die_1_Display.Series["Number Rolled"].Points.AddXY(roll_1, diceFrequency[roll_1 - 1, 0]);
                 Die_2_Display.Series["Number Rolled"].Points.AddXY(roll_2, diceFrequency[roll_2 - 1, 1]);
                 Die_Sum_Display.Series["Total Rolled"].Points.AddXY(sum, sumFrequency[sum-2]);
+                Die_Product_Display.Series["Product Rolled"].Points.AddXY(product, productFrequency[product]);
 
                 //Forces the graphs to draw in the new data
                 Die_1_Display.Refresh();
                 Die_2_Display.Refresh();
                 Die_Sum_Display.Refresh();
+                Die_Product_Display.Refresh();
+                #endregion
+
+                int toss = c;
+                coinTossFrequency[toss] += 1;
+
+                Coin_Toss_Display.Series["Toss Frequency"].Points.AddXY(toss, coinTossFrequency[toss]);
+
+                Coin_Toss_Display.Refresh();
             }
 
             //Hides the roll counter once the rolling is done
@@ -193,6 +228,7 @@ namespace Project1
             
             //Get a die with a new seed value
             d = aDie.Instance(seedValue);
+            c = aCoin.Instance(seedValue);
         }
 
         /*-------------------------------------------------------------

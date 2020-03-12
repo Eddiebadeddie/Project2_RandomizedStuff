@@ -4,8 +4,8 @@ namespace Project1
 {
 	internal class aDeckOfCards
     {
+        Random rand = new Random();
         List<aCard> deck;
-        List<bool> present;
         
         public aDeckOfCards(){
             List<char> faces = {
@@ -37,6 +37,13 @@ namespace Project1
             }
 
             Console.WriteLine("Deck completed and created");
+        }
+
+        public aCard draw()
+        {
+            aCard card = deck[rand.Next(0, deck.Count + 1)];
+            deck.Remove(card);
+
         }
     }
 }
