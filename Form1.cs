@@ -22,6 +22,9 @@ namespace Project1
 {
     public partial class Form1 : Form
     {
+        //Creates the instance of 
+        aRNG rng = aRNG.Instance(0);
+
         #region Dice Data Initilizations
         /*
           Instantiates a 2D array that stores the frequencies of each
@@ -43,16 +46,24 @@ namespace Project1
         //Iterations set to 100 by default
         int iterations = 100;
 
-        aRNG rng = aRNG.Instance(0);
 
         //Initializes a single die with a seed of 0
-        aDie d = aDie.Instance(0);
+        aDie d = new aDie();
         #endregion
 
         #region Coin Data Initializations
         int[] coinTossFrequency = new int[2];
 
-        aCoin c = aCoin.Instance(0);
+        aCoin c = new aCoin();
+        #endregion
+
+        #region Deck and Hand Initializations
+        //Creates a new shuffled deck of cards
+        aDeckOfCards deck = new aDeckOfCards();
+        //Creates an empty hand
+        List<aCard> hand = new List<aCard>();
+        //Default draw number for card collection
+        int num_draw = 1;
         #endregion
 
         //Constructor, came with the project
@@ -62,20 +73,23 @@ namespace Project1
             InitializeComponent();
 
             //Ensures that all arrays have 0 in each cell
-            Reset_Counters();
+            Reset();
 
             //Hides the roll counter 
             Roll_Counter_Label.Visible = false;
+
+            //Sets the Draw text box to the default number, 1
+            DrawBox.Text = "" + num_draw;
         }
 
         /*-------------------------------------------------------------
-            void ResetCounters():
+            void Reset():
                 Sets each of the cells for both the diceFrequency array
                 and the sumFrequency array to 0. That way, the graph 
                 will not add to itself if the user presses the Roll 
                 button again.
          ------------------------------------------------------------*/
-        private void Reset_Counters()
+        private void Reset()
         {
             ///*Debug*/Console.Write("RESET_COUNTERS::");
             /*Nested for loop that writes 0 to each cell in the  array
@@ -145,12 +159,13 @@ namespace Project1
             this.Update();
 
             //Resets the counters to 0, and clears the graph of any data
-            Reset_Counters();
+            Reset();
 
             
             //For each iteration, generate a random number and sum them
             for(int i =  0; i < iterations; ++i)
             {
+                //Region for code organization relating to the dice
                 #region Dice Data Collection and Display
                 //roll_1 holds the value of the first number rolled
                 int roll_1 = d;
@@ -185,12 +200,15 @@ namespace Project1
                 Die_Product_Display.Refresh();
                 #endregion
 
+                //Region for code organization relating to the coin
+                #region Coin Data Collection and Display
                 int toss = c;
                 coinTossFrequency[toss] += 1;
 
                 Coin_Toss_Display.Series["Toss Frequency"].Points.AddXY(toss, coinTossFrequency[toss]);
 
                 Coin_Toss_Display.Refresh();
+                #endregion
             }
 
             //Hides the roll counter once the rolling is done
@@ -272,6 +290,115 @@ namespace Project1
                 //Enable the button
                 Roll_Button.Enabled = true;
             }
+        }
+
+        /*-------------------------------------------------------------
+            void DrawBox_TextChanged(object, EventArgs):
+                Determines if the deck can draw any cards based
+                on the user's input
+         ------------------------------------------------------------*/
+        private void DrawBox_TextChanged(object sender, EventArgs e)
+        {
+            //Tries to parse an integer out of the text
+            if(!Int32.TryParse(DrawBox.Text, out int draw))
+            {
+                //If there is no int, display the error message
+                Error_Message_Label.Text = "ERROR: Draw must be an integer";
+                Error_Message_Label.Visible = true;
+
+                //Disable the draw button
+                Draw_Button.Enabled = false;
+                return;
+            }
+
+            //If draw is a negative number or zero
+            if (draw <= 0)
+            {
+                //Display an error message
+                Error_Message_Label.Text = "ERROR: Draw must be positive";
+                Error_Message_Label.Visible = true;
+
+                //Disable the draw button
+                Draw_Button.Enabled = false;
+                return;
+            }
+            //If the draw number is more than the number of cards
+            else if (draw > deck.Count)
+            {
+                //Display the error message
+                Error_Message_Label.Text = "ERROR: Attempting to draw too many cards";
+                Error_Message_Label.Visible = true;
+
+                //Disable the draw button
+                Draw_Button.Enabled = false;
+                return;
+            }
+
+            //Set the number to draw to the number parsed
+            num_draw = draw;
+            //Get rid of the error messages, if there are any
+            Error_Message_Label.Visible = false;
+            //Enable the draw button
+            Draw_Button.Enabled = true;
+        }
+
+        /*-------------------------------------------------------------
+            void Draw_Button_Click(object, EventArgs):
+                Draws a number of cards specified by user input and
+                displays the cards in the Hand_Display
+         ------------------------------------------------------------*/
+        private void Draw_Button_Click(object sender, EventArgs e)
+        {
+            //If there are no cards in the hand
+            if(hand.Count == 0)
+            {
+                //Add the cards drawn to the hand
+                hand = deck.Draw(num_draw);
+            }
+            else
+            {
+                /*  Creates a temporary list of cards to append to
+                    the hand if there are cards in the hand         */
+                List<aCard> cards_to_add = deck.Draw(num_draw);
+                
+                //Add the new cards at the end of the hand
+                foreach(aCard card in cards_to_add)
+                {
+                    hand.Add(card);
+                }
+            }
+
+            //Clears the Hand_Display text
+            Hand_Display.Text = "";
+            //Displays each card in the hand in the Hand_Display
+            foreach(aCard card in hand)
+            {
+                Hand_Display.Text += card + "\n";
+            }
+
+            //Checks to see if the draw value is possible
+            DrawBox_TextChanged(sender, e);
+            //Updates the visual of the cards left in the deck
+            Card_Counter_Label.Text = "Cards: " + deck.Count + " / 52";
+        }
+
+        /*-------------------------------------------------------------
+            void Clear_Hand_Button_Click(object, EventArgs):
+                Clears the hand and reshuffles the deck
+         ------------------------------------------------------------*/
+        private void Clear_Hand_Button_Click(object sender, EventArgs e)
+        {
+            //Empties the hand
+            hand.Clear();
+            //Reflects new hand in text box
+            Hand_Display.Text = "";
+
+            //Resets the deck and shuffles the new deck
+            deck.ResetDeck();
+            //Updates number of cards in the deck
+            Card_Counter_Label.Text = "Cards: " + deck.Count + " / 52";
+            //Checks to see if the draw value is possible
+            DrawBox_TextChanged(sender, e);
         }
     }
 }

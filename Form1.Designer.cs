@@ -64,6 +64,12 @@
             this.label6 = new System.Windows.Forms.Label();
             this.Coin_Toss_Display = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.label7 = new System.Windows.Forms.Label();
+            this.Hand_Display = new System.Windows.Forms.TextBox();
+            this.Draw_Button = new System.Windows.Forms.Button();
+            this.DrawBox = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.Card_Counter_Label = new System.Windows.Forms.Label();
+            this.Clear_Hand_Button = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Die_1_Display)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Die_2_Display)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Die_Sum_Display)).BeginInit();
@@ -91,10 +97,10 @@
             this.MAIN_TITLE.AutoSize = true;
             this.MAIN_TITLE.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.MAIN_TITLE.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MAIN_TITLE.Font = new System.Drawing.Font("Perpetua Titling MT", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MAIN_TITLE.Location = new System.Drawing.Point(388, 9);
+            this.MAIN_TITLE.Font = new System.Drawing.Font("Perpetua Titling MT", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MAIN_TITLE.Location = new System.Drawing.Point(717, 9);
             this.MAIN_TITLE.Name = "MAIN_TITLE";
-            this.MAIN_TITLE.Size = new System.Drawing.Size(157, 34);
+            this.MAIN_TITLE.Size = new System.Drawing.Size(172, 38);
             this.MAIN_TITLE.TabIndex = 2;
             this.MAIN_TITLE.Text = "Roll Dice";
             // 
@@ -180,7 +186,7 @@
             this.Die_Sum_Display.Series.Add(series3);
             this.Die_Sum_Display.Size = new System.Drawing.Size(501, 235);
             this.Die_Sum_Display.TabIndex = 9;
-            this.Die_Sum_Display.Text = "chart1";
+            this.Die_Sum_Display.Text = "d";
             // 
             // label3
             // 
@@ -299,6 +305,69 @@
             this.label7.TabIndex = 18;
             this.label7.Text = "Coin Toss";
             // 
+            // Hand_Display
+            // 
+            this.Hand_Display.BackColor = System.Drawing.Color.Indigo;
+            this.Hand_Display.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Hand_Display.ForeColor = System.Drawing.Color.Yellow;
+            this.Hand_Display.Location = new System.Drawing.Point(1132, 409);
+            this.Hand_Display.Multiline = true;
+            this.Hand_Display.Name = "Hand_Display";
+            this.Hand_Display.ReadOnly = true;
+            this.Hand_Display.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.Hand_Display.Size = new System.Drawing.Size(56, 204);
+            this.Hand_Display.TabIndex = 19;
+            // 
+            // Draw_Button
+            // 
+            this.Draw_Button.Location = new System.Drawing.Point(1217, 499);
+            this.Draw_Button.Name = "Draw_Button";
+            this.Draw_Button.Size = new System.Drawing.Size(75, 20);
+            this.Draw_Button.TabIndex = 20;
+            this.Draw_Button.Text = "Draw";
+            this.Draw_Button.UseVisualStyleBackColor = true;
+            this.Draw_Button.Click += new System.EventHandler(this.Draw_Button_Click);
+            // 
+            // DrawBox
+            // 
+            this.DrawBox.Location = new System.Drawing.Point(1315, 499);
+            this.DrawBox.Name = "DrawBox";
+            this.DrawBox.Size = new System.Drawing.Size(55, 20);
+            this.DrawBox.TabIndex = 21;
+            this.DrawBox.Text = "99";
+            this.DrawBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.DrawBox.TextChanged += new System.EventHandler(this.DrawBox_TextChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(1131, 385);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(48, 20);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "Hand";
+            // 
+            // Card_Counter_Label
+            // 
+            this.Card_Counter_Label.AutoSize = true;
+            this.Card_Counter_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Card_Counter_Label.Location = new System.Drawing.Point(1222, 460);
+            this.Card_Counter_Label.Name = "Card_Counter_Label";
+            this.Card_Counter_Label.Size = new System.Drawing.Size(148, 26);
+            this.Card_Counter_Label.TabIndex = 23;
+            this.Card_Counter_Label.Text = "Cards: 52 / 52";
+            // 
+            // Clear_Hand_Button
+            // 
+            this.Clear_Hand_Button.Location = new System.Drawing.Point(1217, 525);
+            this.Clear_Hand_Button.Name = "Clear_Hand_Button";
+            this.Clear_Hand_Button.Size = new System.Drawing.Size(75, 20);
+            this.Clear_Hand_Button.TabIndex = 24;
+            this.Clear_Hand_Button.Text = "Clear Hand";
+            this.Clear_Hand_Button.UseVisualStyleBackColor = true;
+            this.Clear_Hand_Button.Click += new System.EventHandler(this.Clear_Hand_Button_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -306,6 +375,12 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1837, 783);
+            this.Controls.Add(this.Clear_Hand_Button);
+            this.Controls.Add(this.Card_Counter_Label);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.DrawBox);
+            this.Controls.Add(this.Draw_Button);
+            this.Controls.Add(this.Hand_Display);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.Coin_Toss_Display);
             this.Controls.Add(this.label6);
@@ -361,6 +436,12 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DataVisualization.Charting.Chart Coin_Toss_Display;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox Hand_Display;
+        private System.Windows.Forms.Button Draw_Button;
+        private System.Windows.Forms.TextBox DrawBox;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label Card_Counter_Label;
+        private System.Windows.Forms.Button Clear_Hand_Button;
     }
 }
 
